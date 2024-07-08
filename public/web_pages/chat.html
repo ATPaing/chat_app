@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat | Chat_Sample</title>
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link rel="stylesheet" href="../styles/reset.css">
+</head>
+<body>
+    <div class="messages_wrapper">
+        <!-- <div class="message">
+            <div>
+                <p class="user_name">John Doe</p>
+            </div>
+            <div>
+                <p class="user_msg">This is the message sent from john doe</p>
+            </div>
+        </div>
+        <div class="message">
+            <div>
+                <p class="user_name">Sarah</p>
+            </div>
+            <div>
+                <p class="user_msg">This is the message sent from Sarah</p>
+            </div>
+        </div> -->
+    </div>
+    <div class="input_section">
+        <form action="">
+            <input class="form_input" type="text" placeholder="Enter your message">
+            <button>Send</button>
+        </form>
+    </div>
+    <div class="people_online">
+        <div class="green_light">
+
+        </div>
+        <p class="online_counts">0</p>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../../functions/chat_client.js"></script>
+</body>
+</html>

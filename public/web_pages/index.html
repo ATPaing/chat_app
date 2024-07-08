@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Chat_Sample</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../styles/index.css" type="text/css">
+    <link rel="stylesheet" href="../styles/reset.css" type="text/css">
+</head>
+<body>
+    <h1>Chatting time !</h1>
+    <main>
+        <form action="/chat" method="post">
+            <div class="input-container">
+                <label for="inputField" class="input-label">Enter your name:</label>
+                <input type="text" id="inputField" class="input-field">
+            </div>
+            <button class="join-button">
+                Join the chat
+            </button>
+        </form>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../../functions/join_socket.js"></script>
+</body>
+</html>

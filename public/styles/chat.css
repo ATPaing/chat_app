@@ -1,0 +1,83 @@
+body{
+    position: relative;
+    height: 100vh;
+    background-color: rgb(202, 246, 246);
+}
+
+.message_wrapper{
+    display: flex;
+    flex-direction: column;
+
+}
+.message{
+    background-color: white;
+    padding: 1em 2em;
+}
+
+.message:nth-child(even) {
+    background-color: rgb(236, 236, 236);
+}
+
+.user_name{
+    font-size: 0.85rem;
+    color: rgb(130, 130, 130);
+    font-weight: bold;
+}
+
+.user_msg{
+    font-size: 1rem;
+    font-weight: normal;
+    color: #303030;
+}
+
+.input_section{
+    position: absolute;
+    bottom: 1em;
+}
+
+form{
+    display: flex;
+    width: 100vw;
+    gap: 1em;
+    padding: 0.5em;
+}
+
+.form_input{
+    width: 95%;
+    padding: 1em 2em;
+    border-radius: 500px;
+    border: 1px solid rgb(39, 61, 63);
+}
+
+button{
+    width: 5%;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background-color: rgb(77, 151, 236);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover{
+    color: rgb(77, 151, 236);
+    background-color: white;
+    border: 2px solid rgb(77, 151, 236);
+}
+
+.people_online{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.35em;
+    top: 1em;
+    right: 1em;
+}
+
+.green_light{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(15, 210, 15);
+}
