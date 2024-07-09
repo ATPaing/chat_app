@@ -1,17 +1,29 @@
 body{
     position: relative;
     height: 100vh;
-    background-color: rgb(202, 246, 246);
+    background-color: rgb(184, 252, 252);
+    display: flex;
+    flex-direction: column;
 }
 
-.message_wrapper{
+.messages_wrapper{
+    /* min-height: 80vh; */
+    flex-grow: auto;
     display: flex;
     flex-direction: column;
 
+    overflow: auto;
+    scroll-behavior: smooth;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+
 }
 .message{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
     background-color: white;
     padding: 1em 2em;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
 }
 
 .message:nth-child(even) {
@@ -24,32 +36,57 @@ body{
     font-weight: bold;
 }
 
+.message__content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+}
+
 .user_msg{
     font-size: 1rem;
     font-weight: normal;
     color: #303030;
+    margin-bottom: 0.5em;
+}
+
+.user_image{
+    max-width: 200px;  
+    max-height: 200px; 
+    width: auto;      
+    height: auto;  
+    cursor: zoom-in;
+    border: 1px solid #303030; 
 }
 
 .input_section{
-    position: absolute;
-    bottom: 1em;
+    align-content: flex-end;
+    flex-grow: 1;
+    margin-bottom: 1em;
+    
 }
 
 form{
     display: flex;
+    flex-direction: column;
     width: 100vw;
-    gap: 1em;
-    padding: 0.5em;
+    padding: 1em 0.75em;
+    box-shadow: 0px -2px 2px 0px rgba(33, 33, 33, 0.549);
 }
 
-.form_input{
+.text_panel{
+    display: flex;
+    width: 100%;
+    gap: 1em;
+}
+
+.text_input{
     width: 95%;
     padding: 1em 2em;
     border-radius: 500px;
     border: 1px solid rgb(39, 61, 63);
 }
 
-button{
+.send_btn{
     width: 5%;
     border-radius: 50px;
     border: 2px solid transparent;
@@ -59,7 +96,7 @@ button{
     cursor: pointer;
 }
 
-button:hover{
+.send_btn:hover{
     color: rgb(77, 151, 236);
     background-color: white;
     border: 2px solid rgb(77, 151, 236);
@@ -75,9 +112,103 @@ button:hover{
     right: 1em;
 }
 
-.green_light{
+.green_light {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: rgb(15, 210, 15);
+    background-color: rgb(60, 242, 60);
+    animation: blinkAnimation 2s infinite;
+}
+
+@keyframes blinkAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+        background-color: rgb(18, 136, 5);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.options_panel{
+    width: max-content;
+    margin-left: 1em;
+}
+
+.add_image{
+    position: relative;
+    width: max-content;
+}
+
+.add_image:hover .svg_bg {
+    fill: #1E79AA;
+}
+
+.image_input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#imageModal{
+    margin: auto;
+}
+
+.modal-content{
+    display: flex;
+}
+
+::backdrop {
+    background-color: #303030;
+    opacity: 0.75;
+}
+.image_preview:empty {
+    display: none;
+}
+
+.image_preview{
+    padding: 1em;
+    background-color: rgba(161, 161, 161, 0.118);
+
+}
+
+.img_preview__wrapper{
+    position: relative;
+    width: max-content;
+}
+
+/* .img__preview__close--bg{
+    position: absolute;
+    top:0;
+    left:0;
+    padding: 0.35em;
+    width: 100%;
+    background-color: rgb(245, 245, 245);
+} */
+
+.img__preview__close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-weight: bold;
+    color: rgb(249, 224, 255);
+    text-shadow: 0px 0px 5px #303030;
+    cursor: pointer;
+}
+
+.img__preview__close:hover{
+    color: rgb(255, 122, 122)
+}
+
+.image_preview__img{
+    max-width: 100px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+    border: 1px solid #303030;
 }

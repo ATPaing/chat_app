@@ -16,20 +16,30 @@
             <div>
                 <p class="user_msg">This is the message sent from john doe</p>
             </div>
-        </div>
-        <div class="message">
-            <div>
-                <p class="user_name">Sarah</p>
-            </div>
-            <div>
-                <p class="user_msg">This is the message sent from Sarah</p>
-            </div>
         </div> -->
     </div>
     <div class="input_section">
+        <div class="image_preview"></div>
         <form action="">
-            <input class="form_input" type="text" placeholder="Enter your message">
-            <button>Send</button>
+            <div class="options_panel">
+                <div class="add_image">
+                    <input class="image_input" type="file" accept="image/*" aria-label="Upload Image">
+                    <svg width="35" height="35" viewBox="0 0 50 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="svg_bg" d="M40.9091 38.6364H4.54545C2.04545 38.6364 0 36.5909 0 34.0909V4.54545C0 2.04545 2.04545 0 4.54545 0H40.9091C43.4091 0 45.4545 2.04545 45.4545 4.54545V34.0909C45.4545 36.5909 43.4091 38.6364 40.9091 38.6364Z" fill="#8CBCD6"/>
+                        <path d="M35.2273 13.6364C37.1101 13.6364 38.6364 12.1101 38.6364 10.2273C38.6364 8.34449 37.1101 6.81818 35.2273 6.81818C33.3445 6.81818 31.8182 8.34449 31.8182 10.2273C31.8182 12.1101 33.3445 13.6364 35.2273 13.6364Z" fill="#B3DDF5"/>
+                        <path d="M18.1818 10.2273L5.68182 28.4091H30.6818L18.1818 10.2273Z" fill="#9AC9E3"/>
+                        <path d="M30.6818 17.0455L21.5909 28.4091H39.7727L30.6818 17.0455Z" fill="#B3DDF5"/>
+                        <path d="M38.6364 46.5909C44.9123 46.5909 50 41.5032 50 35.2273C50 28.9513 44.9123 23.8636 38.6364 23.8636C32.3604 23.8636 27.2727 28.9513 27.2727 35.2273C27.2727 41.5032 32.3604 46.5909 38.6364 46.5909Z" fill="#43A047"/>
+                        <path d="M36.3636 28.4091H40.9091V42.0455H36.3636V28.4091Z" fill="white"/>
+                        <path d="M31.8182 32.9545H45.4546V37.5H31.8182V32.9545Z" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="text_panel">
+                <input class="text_input" type="text" placeholder="Enter your message">
+                <button class="send_btn">Send</button>
+            </div>
+
         </form>
     </div>
     <div class="people_online">
@@ -38,6 +48,14 @@
         </div>
         <p class="online_counts">0</p>
     </div>
+
+    <dialog id="imageModal">
+        <div class="modal-content">
+            <!-- <span class="close" id="closeModal">&times;</span> -->
+            <img id="modalImage" src="" alt="Full-size image">
+        </div>
+    </dialog>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../functions/chat_client.js"></script>
 </body>

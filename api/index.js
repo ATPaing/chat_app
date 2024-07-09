@@ -33,10 +33,14 @@ io.on('connection', (socket) => {
 
     const numConnectedSockets = io.engine.clientsCount;
 
+    socket.on('join', (username) => {
+        console.log(`${username} joined the chat`);
+        socket.username = username;
+    });
+
     socket.on('set username', (username) => {
         socket.username = username;
-        
-        io.emit('connected', numConnectedSockets);
+        io.emit('connected_users', numConnectedSockets);
     });
 
     socket.on('chat message', (msg) => {
