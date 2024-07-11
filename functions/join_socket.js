@@ -8,7 +8,6 @@ localStorage.clear();
 form.addEventListener('submit', (e) => {  
     const socket = io();
     const username = input.value;
-    // socket.emit('join', username);
     localStorage.setItem('username', username);
     input.value = '';
 });

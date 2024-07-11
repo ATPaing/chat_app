@@ -19,12 +19,12 @@ if (username) {
     socket.emit('set username', username);
 }
 
+// Image Preview
 image_input.addEventListener('change', (e) => {
     const file = image_input.files[0];
     console.log(file)
     reader.readAsDataURL(file);
     console.log(reader)
-    console.log(reader.result)
     reader.onload = () => {
         image_preview.innerHTML = ` 
         <div class="img_preview__wrapper">
@@ -44,6 +44,7 @@ image_input.addEventListener('change', (e) => {
     
 })
 
+// Send message
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const file = image_input.files[0];
@@ -76,20 +77,61 @@ form.addEventListener('submit', (e) => {
     }
 })
 
-
+// get number of connected sockets
 socket.on('connected_users', (numConnectedSockets) => {
     online_counts.innerHTML = ` ${numConnectedSockets}`;
 })
 
+// run when user disconnected
 socket.on('disconnected', (numConnectedSockets) => {    
     online_counts.innerHTML = ` ${numConnectedSockets}`;
 })
 
-socket.on('chat message', (msg) => {   
+// update the UI of chat after receiving the data from the database
+socket.on('data in database', (data) => {
+    console.log(data)
+    for (const message of data) {
+        const username = message.username
+        const messageContent = message.message
+        const image = message.image_data
+
+        let messageHTML = ` 
+            <div class="message">
+                <div>
+                    <p class="user_name">${username}</p>
+                </div>
+                <div class="message__content">
+                    <p class="user_msg">${messageContent}</p>
+        `;
+
+        if (image) {
+            messageHTML += ` 
+                <div>
+                    <img src="${image}" alt="User Image" class="user_image">
+                </div>
+            `;
+        }
+
+        messageHTML += `</div> </div>`;
+
+        message_wrapper.innerHTML += messageHTML;
+
+        const newImage = document.getElementsByClassName('user_image');
+
+        for (const image of newImage) {
+            image.addEventListener('click', () => {
+                modal.showModal();
+                modalImage.src = image.src;
+            });
+        }
+    }
+});
+
+
+// update UI of chat after receiving the message
+socket.on('chat message', (msg) => {
 
     console.log(msg)
-
-
     const username = msg.username
     
     const message = msg.message.message
@@ -129,12 +171,13 @@ socket.on('chat message', (msg) => {
         });
     }
 
-})
+});
 
 // closeModal.addEventListener('click', () => {
 //     modal.close();
 // });
 
+// Close the modal when clicked outside the modal
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
         modal.close();
