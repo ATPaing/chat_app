@@ -3,9 +3,8 @@ const mysql = require('mysql2');
 const http = require('http');
 const {Server} = require('socket.io');  
 
-
+const fs = require('fs');
 const path = require('path');
-const { queryObjects } = require('v8');
 
 const port = 3000;
 const app = express();
@@ -70,16 +69,17 @@ io.on('connection', (socket) => {
     });
 
     // get the message from the client and store it in the database
-    socket.on('chat message', (msg) => {
+    socket.on('chat message', (msg,img_name) => {
 
-        if(msg.image) {
-            console.log(msg.image.length)
-        }
         const query = `insert into chats (username,message,image_data) values (?, ?, ?)`
 
         if (msg.image) {
 
-            database.query(query, [socket.username, msg.message, msg.image], (err, res) => {
+            const imagePath = saveImageLocally(msg.image,img_name);
+
+            console.log('Image saved locally at:', imagePath);
+
+            database.query(query, [socket.username, msg.message, imagePath], (err, res) => {
                 if (err) {
                     throw err
                 }
@@ -111,7 +111,35 @@ io.on('connection', (socket) => {
     })
 })
 
+// create folder if not exists
+function createFolderIfNotExists(folderPath) {
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+}
 
+// Function to save image locally
+function saveImageLocally(base64String, imageName) {
+    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    // Generate a unique filename or use timestamp
+    const fileName = `${imageName}`;
+    
+    // Specify the folder path where you want to store images
+    const uploadFolder = path.join(__dirname, '../public/uploaded_images'); // Adjust the path as needed
+    
+    // Create the folder if it doesn't exist
+    createFolderIfNotExists(uploadFolder);
+    
+    // Construct the full file path
+    const filePath = path.join(uploadFolder, fileName);
+    
+    // Save the file to disk
+    fs.writeFileSync(filePath, buffer);
+
+    return `uploaded_images/${fileName}`;
+}
 
 server.listen(port, () => {    
     console.log(`Server is running on port ${port}`);

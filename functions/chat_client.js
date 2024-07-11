@@ -52,7 +52,7 @@ form.addEventListener('submit', (e) => {
     if (message || file) {
 
         if (file) {
-            
+            const image_name = file.name
             reader.readAsDataURL(file);
             reader.onload = () => {
                 const imgData = reader.result;
@@ -61,7 +61,7 @@ form.addEventListener('submit', (e) => {
                     message: message,
                     image: imgData
                 }
-                socket.emit('chat message', emitMessage);
+                socket.emit('chat message', emitMessage, image_name );
             }
             
         } else {
