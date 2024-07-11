@@ -3,8 +3,19 @@ const mysql = require('mysql2');
 const http = require('http');
 const {Server} = require('socket.io');  
 
-const fs = require('fs');
+const { initializeApp } = require('firebase-admin/app');
+const { getStorage } = require('firebase-admin/storage');
+const admin = require("firebase-admin");
+
 const path = require('path');
+
+const serviceAccount = require("../chat_app_credentials.json");
+const firebaseApp = initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "chatapp-78dab.appspot.com",
+});
+
+const bucket = getStorage(firebaseApp).bucket();
 
 const port = 3000;
 const app = express();
@@ -69,15 +80,15 @@ io.on('connection', (socket) => {
     });
 
     // get the message from the client and store it in the database
-    socket.on('chat message', (msg,img_name) => {
+    socket.on('chat message', async (msg,img_name) => {
 
         const query = `insert into chats (username,message,image_data) values (?, ?, ?)`
 
         if (msg.image) {
 
-            const imagePath = saveImageLocally(msg.image,img_name);
+            const imagePath = await saveImageToFirestore(msg.image, img_name);
 
-            console.log('Image saved locally at:', imagePath);
+            console.log('Image saved to Firestore:', imagePath);
 
             database.query(query, [socket.username, msg.message, imagePath], (err, res) => {
                 if (err) {
@@ -111,34 +122,27 @@ io.on('connection', (socket) => {
     })
 })
 
-// create folder if not exists
-function createFolderIfNotExists(folderPath) {
-    if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
-    }
-}
-
-// Function to save image locally
-function saveImageLocally(base64String, imageName) {
+// Function to save image to Firestore Storage
+async function saveImageToFirestore(base64String, imageName) {
     const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
-    
-    // Generate a unique filename or use timestamp
-    const fileName = `${imageName}`;
-    
-    // Specify the folder path where you want to store images
-    const uploadFolder = path.join(__dirname, '../public/uploaded_images'); // Adjust the path as needed
-    
-    // Create the folder if it doesn't exist
-    createFolderIfNotExists(uploadFolder);
-    
-    // Construct the full file path
-    const filePath = path.join(uploadFolder, fileName);
-    
-    // Save the file to disk
-    fs.writeFileSync(filePath, buffer);
 
-    return `uploaded_images/${fileName}`;
+    // Create a unique filename
+    const fileName = `${imageName}`;
+
+    // Create a file reference in Firestore Storage
+    const file = bucket.file(fileName);
+
+    // Save the file to Firestore Storage
+    await file.save(buffer, {
+        metadata: { contentType: 'image/png' } // Adjust contentType as needed
+    });
+
+    // Make the file publicly accessible
+    await file.makePublic();
+
+    // Return the public URL
+    return file.publicUrl();
 }
 
 server.listen(port, () => {    
